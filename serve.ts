@@ -1,20 +1,20 @@
-// A tiny static server for app/ (Node 22, standard library only), a
-// development convenience for trying the entry locally: `node serve.ts`
-// serves app/ on http://localhost:8080. It only answers with files under
-// app/, sends the MIME types an offline web app needs, and refuses any
-// path that climbs out of app/.
+// A small static file server for app/, only for trying the entry locally:
+// `node serve.ts` serves app/ on http://localhost:8080. Standard library
+// only. It answers with the MIME types an offline web app needs and
+// refuses any path that climbs out of app/.
+
 import { createReadStream, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, join, normalize, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const appRoot = resolve(fileURLToPath(new URL('./app', import.meta.url)));
-const args = process.argv.slice(2);
-const portArg = args.indexOf('--port');
-const wanted = portArg === -1 ? 8080 : Number(args[portArg + 1]);
+const argv = process.argv.slice(2);
+const portFlag = argv.indexOf('--port');
+const wanted = portFlag === -1 ? 8080 : Number(argv[portFlag + 1]);
 const port = Number.isInteger(wanted) && wanted > 0 && wanted < 65536 ? wanted : 8080;
 
-const MIME_TYPES = {
+const TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
   '.mjs': 'text/javascript; charset=utf-8',
@@ -23,40 +23,47 @@ const MIME_TYPES = {
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
+  '.gif': 'image/gif',
+  '.webp': 'image/webp',
+  '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
+  '.woff2': 'font/woff2',
+  '.woff': 'font/woff',
   '.ttf': 'font/ttf',
+  '.otf': 'font/otf',
+  '.wasm': 'application/wasm',
   '.txt': 'text/plain; charset=utf-8',
 };
 
-createServer((request, response) => {
-  const url = new URL(request.url ?? '/', 'http://localhost');
-  let pathname;
+createServer((req, res) => {
+  let path;
   try {
-    pathname = decodeURIComponent(url.pathname);
+    path = decodeURIComponent(new URL(req.url ?? '/', 'http://localhost').pathname);
   } catch {
-    response.writeHead(400).end('bad request');
+    res.writeHead(400).end('bad request');
     return;
   }
-  if (pathname.endsWith('/')) pathname += 'index.html';
-  const file = resolve(join(appRoot, normalize(pathname)));
+  if (path.endsWith('/')) path += 'index.html';
+  const file = resolve(join(appRoot, normalize(path)));
   if (file !== appRoot && !file.startsWith(appRoot + sep)) {
-    response.writeHead(403).end('forbidden');
+    res.writeHead(403).end('forbidden');
     return;
   }
-  let size;
+  let bytes;
   try {
-    const stats = statSync(file);
-    if (!stats.isFile()) throw new Error('not a file');
-    size = stats.size;
+    const info = statSync(file);
+    if (!info.isFile()) throw new Error('not a file');
+    bytes = info.size;
   } catch {
-    response.writeHead(404).end('not found');
+    res.writeHead(404).end('not found');
     return;
   }
-  response.writeHead(200, {
-    'content-type': MIME_TYPES[extname(file).toLowerCase()] ?? 'application/octet-stream',
-    'content-length': size,
+  res.writeHead(200, {
+    'content-type': TYPES[extname(file).toLowerCase()] ?? 'application/octet-stream',
+    'content-length': bytes,
     'cache-control': 'no-store',
   });
-  createReadStream(file).pipe(response);
+  createReadStream(file).pipe(res);
 }).listen(port, '127.0.0.1', () => {
   console.log(`app/ is on http://localhost:${port}`);
 });
