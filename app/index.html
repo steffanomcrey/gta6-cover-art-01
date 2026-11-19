@@ -1,92 +1,105 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Neon Shores, GTA-style cover art maker</title>
-<link rel="stylesheet" href="./style.css">
+<title>Neon Shores — GTA-style Cover Art Studio</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main class="app">
-  <section class="controls" id="controls">
-    <h1>Neon Shores</h1>
-    <p class="tag">Turn any photo and a caption into GTA-style cover art. Offline, in your browser. Photos never leave your machine.</p>
-
-    <div class="group">
-      <h2>1. Photos</h2>
-      <label class="file-label">Add your photos
-        <input id="addPhotos" type="file" accept="image/*" multiple>
-      </label>
-      <div class="row">
-        <button id="useSample1" type="button">Sample: boulevard</button>
-        <button id="useSample2" type="button">Sample: pier</button>
-      </div>
+<header class="topbar">
+  <div class="brand">
+    <span class="brandMark">NS</span>
+    <div>
+      <h1>Neon Shores Cover Studio</h1>
+      <p>Turn any photo into GTA-style multi-panel cover art. Offline, no upload.</p>
     </div>
+  </div>
+  <div class="topActions">
+    <button id="surprise" class="accentBtn" type="button">Surprise me</button>
+    <button id="undoBtn" type="button">Undo</button>
+    <button id="redoBtn" type="button">Redo</button>
+  </div>
+</header>
 
-    <div class="group">
-      <h2>2. Cover idea</h2>
-      <div class="chips" id="presets"></div>
+<main class="studio">
+  <section class="previewPane">
+    <div class="previewHead">
+      <span id="sizeLabel">Square 1080 x 1080 — live preview</span>
+      <label class="sizePick"><input type="radio" name="previewSize" value="square" checked> Square</label>
+      <label class="sizePick"><input type="radio" name="previewSize" value="story"> Story</label>
+      <label class="sizePick"><input type="radio" name="previewSize" value="wide"> Wide</label>
     </div>
-
-    <div class="group">
-      <h2>3. Layout</h2>
-      <div class="chips" id="layouts"></div>
+    <canvas id="preview" width="1080" height="1080" aria-label="Cover preview"></canvas>
+    <p id="exportNote" class="hint">Pick a preset, tweak a panel, export. Three sizes, one click each.</p>
+    <div class="exportRow">
+      <button data-export="square" type="button">Export Square PNG</button>
+      <button data-export="story" type="button">Export Story PNG</button>
+      <button data-export="wide" type="button">Export Wide PNG</button>
+      <button id="exportAll" class="accentBtn" type="button">Export all three</button>
     </div>
+  </section>
 
-    <div class="group">
-      <h2>4. Grade</h2>
-      <div class="chips" id="grades"></div>
-    </div>
+  <aside class="controls">
+    <section class="card">
+      <h2>Cover ideas</h2>
+      <div id="presetRow" class="presetRow"></div>
+    </section>
 
-    <div class="group">
-      <h2>5. Lettering</h2>
-      <label>Title <input id="title" type="text" maxlength="24" value="NEON SHORES"></label>
-      <label>Subtitle (script) <input id="subtitle" type="text" maxlength="48" value="one last ride in Leonida"></label>
-      <label>Tagline <input id="tagline" type="text" maxlength="48" value="Welcome to Leonida"></label>
-      <label>Badge <input id="badge" type="text" maxlength="28" value="EST. HEAT - VICE SHORES"></label>
-      <label>Heat stars (0-5) <input id="heat" type="range" min="0" max="5" step="1" value="5"></label>
-    </div>
-
-    <div class="group">
-      <h2>6. Panels</h2>
-      <p class="hint">Click a panel on the cover, or pick one here, then set its photo, zoom and position.</p>
-      <div id="panels"></div>
-      <label>Panel photo
-        <select id="panelPhoto"></select>
-      </label>
-      <label>Zoom <span id="panelZoomVal">100%</span>
-        <input id="panelZoom" type="range" min="1" max="2.5" step="0.05" value="1">
-      </label>
-      <label>Position left-right <input id="panelX" type="range" min="0" max="1" step="0.01" value="0.5"></label>
-      <label>Position up-down <input id="panelY" type="range" min="0" max="2" step="0.01" value="0.4"></label>
-      <label>Panel caption <input id="panelLabel" type="text" maxlength="24" value=""></label>
-    </div>
-
-    <div class="group">
-      <h2>7. Export</h2>
-      <label>Preview size
-        <select id="size">
-          <option value="square">Square 1080 x 1080</option>
-          <option value="portrait">Portrait 1080 x 1350</option>
-          <option value="wide">Wide 1920 x 1080</option>
+    <section class="card">
+      <h2>Lettering</h2>
+      <label>Title <input id="caption" type="text" maxlength="24" value="Neon Shores"></label>
+      <label>Script subtitle <input id="subtitle" type="text" maxlength="48" value="one last ride in Leonida"></label>
+      <label>Quote line <input id="quote" type="text" maxlength="80" value="Welcome to Leonida. One city, no brakes."></label>
+      <label>Badge ribbon <input id="badge" type="text" maxlength="40" value="EST. HEAT - VICE SHORES"></label>
+      <label>Heat stars
+        <select id="stars">
+          <option value="5">5 stars</option>
+          <option value="4">4 stars</option>
+          <option value="3">3 stars</option>
         </select>
       </label>
-      <div class="row">
-        <button id="exportOne" type="button" class="primary">Export this size</button>
-        <button id="exportAll" type="button" class="primary">Export all 3 sizes</button>
-      </div>
-      <div class="row">
-        <button id="undo" type="button">Undo</button>
-        <button id="redo" type="button">Redo</button>
-      </div>
-      <p id="status" role="status">Pick a preset, then export.</p>
-    </div>
-    <p class="fine">Original art and lettering. Fonts: Anton and Pacifico under the SIL Open Font License, see app/fonts. Not affiliated with Rockstar Games.</p>
-  </section>
-  <section class="stage">
-    <canvas id="cover" width="1080" height="1080" aria-label="The cover preview"></canvas>
-  </section>
+      <label>Tags (comma separated) <input id="tags" type="text" value="neonshores, leonida, vicecity, gta6style"></label>
+    </section>
+
+    <section class="card">
+      <h2>Layout &amp; grade</h2>
+      <label>Layout <select id="layout"></select></label>
+      <label>Colour grade <select id="grade"></select></label>
+      <p class="hint">Grades are skin-safe: a low-alpha wash that never pushes faces into orange mush.</p>
+    </section>
+
+    <section class="card">
+      <h2>Photos</h2>
+      <label>Photo library
+        <select id="photoLibrary">
+          <option value="boulevard">Boulevard</option>
+          <option value="pier">Pier 9</option>
+        </select>
+      </label>
+      <label>Upload your own photo <input id="uploadPhoto" type="file" accept="image/*"></label>
+      <button id="fillAll" type="button">Fill every panel with this photo</button>
+      <p class="hint">Your photos never leave this machine. Uploads are read in memory only.</p>
+    </section>
+
+    <section class="card">
+      <h2 id="panelTitle">Panel 1 of 9</h2>
+      <div id="panelList" class="panelList"></div>
+      <label>Panel photo <select id="panelPhoto"></select></label>
+      <label>Zoom <input id="panelZoom" type="range" min="1" max="2" step="0.05" value="1.15"> <span id="panelZoomVal">115%</span></label>
+      <label>Focus left-right <input id="panelFx" type="range" min="0" max="1" step="0.05" value="0.5"></label>
+      <label>Focus top-bottom <input id="panelFy" type="range" min="0" max="1" step="0.05" value="0.5"></label>
+      <label>Panel caption <input id="panelCaption" type="text" maxlength="24"></label>
+      <p class="hint">Click a panel row above, then move its photo with the sliders. Faces stay inside the panel: the painter clamps every photo so it always covers its frame.</p>
+    </section>
+  </aside>
 </main>
-<script type="module" src="./src/main.js"></script>
+
+<footer class="foot">
+  <p>Neon Shores Cover Studio — an original poster maker. No Rockstar Games logo, artwork or font. Lettering: Anton and Pacifico under the SIL Open Font License. Sample photos were made with an image model for make.fun and are free to use.</p>
+</footer>
+
+<script type="module" src="src/posterApp.js"></script>
+<script type="module" src="src/posterShots.js"></script>
 </body>
 </html>
