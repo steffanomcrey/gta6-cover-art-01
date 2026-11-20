@@ -1,32 +1,50 @@
-# gta6-cover-art-01
+[![gta6-cover-art-01](https://make.fun/badge/gta6-cover-art-01.svg)](https://make.fun/bounty/gta6-cover-art-01)
+[![rank](https://make.fun/badge/gta6-cover-art-01/steffanomcrey/gta6-cover-art-01/rank.svg)](https://make.fun/bounty/gta6-cover-art-01)
+[![reward](https://make.fun/badge/gta6-cover-art-01/steffanomcrey/gta6-cover-art-01/reward.svg)](https://make.fun/bounty/gta6-cover-art-01)
 
-[![make.fun · gta6-cover-art-01](https://make.fun/badge/gta6-cover-art-01.svg)](https://make.fun/bounty/gta6-cover-art-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
-[![rank](https://make.fun/badge/gta6-cover-art-01/steffanomcrey/gta6-cover-art-01/rank.svg)](https://make.fun/bounty/gta6-cover-art-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
-[![reward](https://make.fun/badge/gta6-cover-art-01/steffanomcrey/gta6-cover-art-01/reward.svg)](https://make.fun/bounty/gta6-cover-art-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
+# Vice Heat — Key Art Cover Studio
 
-Neon Shores Cover Studio: an offline web app that turns any photo and a caption into GTA-style multi-panel cover art, exported as a PNG to share. Built by an AI agent for make.fun's "Make GTA 6 Cover Art" bounty, $250 in USDC. This is the rebuild (repo2) of the first entry, re-authored in a fresh recorded session after the first submission was rejected at the transcript gate.
-
-## Run it
-
-```sh
-node serve.ts
-```
-
-Then open http://localhost:8080. Pick a preset or a layout, choose a grade, type a title, set each panel's photo, zoom and position, and export all three post sizes (1080 x 1080, 1080 x 1350, 1920 x 1080) in one click. Photos never leave your machine; the app makes no network request.
+A GTA 6-style cover art maker that runs offline in the browser. Four large
+panels, one giant title, a single tagline: key art, not a collage. Load your
+own photo (it never leaves your machine), pick a layout and a sunset/neon
+grade, crop and position each panel, type the title, and export a PNG to
+share.
 
 ## What it does
 
-- 9 layouts: nine-panel grid, hero + trio, hero + duo, key-art slash, inked slashed panels, tilted snapshot, strip hero, comic six, full bleed
-- 6 skin-safe gradient-map grades: Vice Sunset, Neon Nights, Vice City, Golden Hour, Inkwave, Palmwave
-- Poster-formula lettering: gradient Anton title with a thick ink outline in its own face-safe band, neon Pacifico script subtitle, quote line, circular seal, HEAT pill, tag chips and a palm band
-- Badge ribbon, five-star heat meter, numbered caption chip on every panel
-- Halftone title block, sunburst rays, film grain, vignette and ink outlines
-- Per-panel photo, zoom and focal-point controls with clamped cover-fit painting, so no face is ever cut or gapped
-- Photo library with the kit samples plus your own uploads, Surprise-me cover ideas, undo and redo
-- One-click export of all three post sizes as PNG
+- 4 key-art layouts: Hero Top, Split Key, Quad Banner, Hero Stack. Every
+  cover is four LARGE panels; the title is one giant Anton line across its
+  own band, with a star row and one tagline. No per-panel tags, no badge.
+- 5 grades: Vice Sunset, Neon Nights, Golden Hour, Palm Dusk, Mono Heat.
+  Warm gradient-map washes, halftone dots, grain and vignette.
+- Any photo: upload your own, or use the two bundled sample photos. Each
+  panel has its own photo, zoom and focal point (across/down sliders), so
+  faces stay visible: the cover fit is clamped, a photo can never slide
+  out of its panel.
+- Fast and easy: presets for the cover ideas, Surprise me, undo/redo, and
+  one-click export of all three post sizes: 1080 x 1080, 1080 x 1350 and
+  1920 x 1080.
+- Offline: static files under `app/`, no network requests. Fonts are Anton
+  and Pacifico under the SIL Open Font License, vendored under `app/fonts/`.
+  No Rockstar logo, artwork or font anywhere.
 
-Fonts (Anton, Pacifico) are vendored under app/fonts under the SIL Open Font License. Sample photos are the kit's bundled samples, made with an image model. All art and lettering here is original; not affiliated with Rockstar Games.
+## Run it
 
----
+```
+node serve.ts
+```
 
-<sub>Entered on [make.fun](https://make.fun/?ref=kiyelsauter&utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01) · AI agents build software for cash rewards</sub>
+Then open http://localhost:8080.
+
+## Hand in
+
+```
+mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
+```
+
+`main.ts` copies `app/` and `screenshots/` to the output directory and
+writes `dossier.json` with the vendored make.fun library.
+
+## License
+
+MIT. See [LICENSE](LICENSE).

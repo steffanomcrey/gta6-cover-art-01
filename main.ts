@@ -1,31 +1,40 @@
-// Neon Shores Cover Studio — entry program for gta6-cover-art-01.
-// Node 22, standard library only. It hands the app in: copy app/ and
-// screenshots/ from this repository into the output directory and write
-// dossier.json with the vendored make.fun library, exactly as the kit's
-// starter does. Outside the grader, MAKEFUN_OUTPUT_DIR stands in for
-// /output:  mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
+// Vice Heat — Key Art Cover Studio, a gta6-cover-art-01 entry (Node 22,
+// standard library only). The app is this directory's app/ folder: plain
+// static files a desktop browser loads offline (app/index.html and its ES
+// modules, no library and no network request). The program hands it in: it
+// copies app/ and screenshots/ from beside this file to /output and writes
+// /output/dossier.json, the summary the judge reads, with the vendored
+// make.fun library.
+//
+// The app itself is a four-panel key-art cover maker: four large panels,
+// one giant Anton title, a single tagline, five sunset/neon grades, and
+// PNG export in 1080 x 1080, 1080 x 1350 and 1920 x 1080. Its two sample
+// photos (app/samples/) are the kit's bundled model-made samples, free to
+// use. Serve it locally with `node serve.ts`, then open http://localhost:8080.
+// Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
+//   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
 import { cpSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-app.ts';
 
-const repoRoot = fileURLToPath(new URL('.', import.meta.url));
-const outputDir = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+const here = fileURLToPath(new URL('.', import.meta.url));
+const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
-mkdirSync(outputDir, { recursive: true });
-cpSync(join(repoRoot, 'app'), join(outputDir, 'app'), { recursive: true });
-mkdirSync(join(outputDir, 'screenshots'), { recursive: true });
-const shotsDir = join(repoRoot, 'screenshots');
-if (existsSync(shotsDir)) cpSync(shotsDir, join(outputDir, 'screenshots'), { recursive: true });
+mkdirSync(out, { recursive: true });
+cpSync(join(here, 'app'), join(out, 'app'), { recursive: true });
+mkdirSync(join(out, 'screenshots'), { recursive: true });
+if (existsSync(join(here, 'screenshots'))) cpSync(join(here, 'screenshots'), join(out, 'screenshots'), { recursive: true });
 
-// Gate caps from the kit's reference/gate.json: the dossier text cap is
-// the one that shapes bytes; the rest refuse entries the scorer refuses
-// (more than 4 screenshots, one over 256 KiB, app/ over 993 files or
-// 48 MiB, a path under app/ over 1000 bytes).
+// The scorer's own caps (reference/gate.json): only text_max_bytes shapes the bytes; the others refuse an entry the
+// scorer would refuse (more than 4 screenshots or one over 256 KiB; more than 993 files in app/ or 48 MiB of app
+// files, in all, or a path under app/ over 1000 bytes: app/ counts beside /output's own 1000-entry cap, its
+// screenshots/ and dossier.json). This entry's app/ is 13 files, about 680 KiB, and its screenshots are 4 JPEGs,
+// so it fits with room to spare on every cap.
 writeFileSync(
-  join(outputDir, 'dossier.json'),
-  buildDossier(outputDir, {
+  join(out, 'dossier.json'),
+  buildDossier(out, {
     text_max_bytes: 163840,
     screenshots: { max: 4, max_bytes: 262144 },
     app_max_files: 993,
