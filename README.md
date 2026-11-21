@@ -1,49 +1,38 @@
-[![gta6-cover-art-01](https://make.fun/badge/gta6-cover-art-01.svg)](https://make.fun/bounty/gta6-cover-art-01)
-[![rank](https://make.fun/badge/gta6-cover-art-01/steffanomcrey/gta6-cover-art-01/rank.svg)](https://make.fun/bounty/gta6-cover-art-01)
-[![reward](https://make.fun/badge/gta6-cover-art-01/steffanomcrey/gta6-cover-art-01/reward.svg)](https://make.fun/bounty/gta6-cover-art-01)
+[![Make GTA 6 Cover Art](https://make.fun/badge/gta6-cover-art-01.svg)](https://make.fun/bounty/gta6-cover-art-01)
+[![Rank](https://make.fun/badge/gta6-cover-art-01/steffanomcrey/gta6-cover-art-01/rank.svg)](https://make.fun/bounty/gta6-cover-art-01)
+[![Reward](https://make.fun/badge/gta6-cover-art-01/steffanomcrey/gta6-cover-art-01/reward.svg)](https://make.fun/bounty/gta6-cover-art-01)
 
-# Vice Heat — Key Art Cover Studio
+# Vice Heat — GTA 6 Cover Art Maker
 
-A GTA 6-style cover art maker that runs offline in the browser. Four large
-panels, one giant title, a single tagline: key art, not a collage. Load your
-own photo (it never leaves your machine), pick a layout and a sunset/neon
-grade, crop and position each panel, type the title, and export a PNG to
-share.
+Turn your photos and a caption into multi-panel GTA-style key art: four large
+photo panels in varied sizes, a Vice City sunset/neon grade, giant gradient
+lettering with a neon script tagline, and PNG export in 1080×1080, 1080×1350
+and 1920×1080.
 
-## What it does
+## How it works
 
-- 4 key-art layouts: Hero Top, Split Key, Quad Banner, Hero Stack. Every
-  cover is four LARGE panels; the title is one giant Anton line across its
-  own band, with a star row and one tagline. No per-panel tags, no badge.
-- 5 grades: Vice Sunset, Neon Nights, Golden Hour, Palm Dusk, Mono Heat.
-  Warm gradient-map washes, halftone dots, grain and vignette.
-- Any photo: upload your own, or use the two bundled sample photos. Each
-  panel has its own photo, zoom and focal point (across/down sliders), so
-  faces stay visible: the cover fit is clamped, a photo can never slide
-  out of its panel.
-- Fast and easy: presets for the cover ideas, Surprise me, undo/redo, and
-  one-click export of all three post sizes: 1080 x 1080, 1080 x 1350 and
-  1920 x 1080.
-- Offline: static files under `app/`, no network requests. Fonts are Anton
-  and Pacifico under the SIL Open Font License, vendored under `app/fonts/`.
-  No Rockstar logo, artwork or font anywhere.
+1. Pick a cover look (Vice Heat, Hero Close-Up, Quad Asymmetric, Night Shift,
+   Pier Pressure) or a layout and grade of your own.
+2. Click a photo in the library to fill the selected panel. Every panel gets
+   a distinct photo while distinct photos remain; the app shows the distinct
+   photo count live.
+3. Tune each panel: zoom and focus X/Y keep the subject in frame. Edit the
+   title and tagline, then export one size or all three.
 
-## Run it
+The app is plain static files (`app/`) with no build step and no network
+requests; fonts and sample photos are bundled. It runs offline:
+`node serve.ts`, then open http://localhost:8080.
 
-```
-node serve.ts
-```
+## Files
 
-Then open http://localhost:8080.
-
-## Hand in
-
-```
-mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
-```
-
-`main.ts` copies `app/` and `screenshots/` to the output directory and
-writes `dossier.json` with the vendored make.fun library.
+- `app/index.html`, `app/style.css` — the editor
+- `app/src/keyart.js` — the key-art render engine (layouts, grades, title)
+- `app/src/state.js` — presets, sizes, undo/redo
+- `app/src/app.js` — editor wiring, library, uploads, export
+- `app/src/shots.js` — fixed screenshot scenes
+- `app/fonts/` — Anton and Pacifico, SIL Open Font License
+- `app/samples/` — six original sunset/neon scenes drawn for this app
+- `main.ts` — copies `app/` and `screenshots/` to the output and writes the dossier
 
 ## License
 
