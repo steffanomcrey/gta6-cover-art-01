@@ -1,175 +1,51 @@
 @font-face {
   font-family: 'Anton';
   src: url('./fonts/Anton-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Pacifico';
   src: url('./fonts/Pacifico-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
   font-display: swap;
 }
 
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: #12081d;
-  color: #f5ead6;
-  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-}
-
-.studio {
-  display: grid;
-  grid-template-columns: 340px minmax(0, 1fr);
-  gap: 20px;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px;
-  align-items: start;
-}
-
-.controls {
-  background: #1e0f2e;
-  border: 1px solid #4a2560;
-  border-radius: 14px;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  position: sticky;
-  top: 20px;
-}
-
-.controls h1 {
-  font-family: 'Anton', sans-serif;
-  font-size: 44px;
-  line-height: 1;
-  margin: 0;
-  letter-spacing: 1px;
-  background: linear-gradient(180deg, #ffe45c, #ff2e88);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.lede { margin: 0; color: #d9c8ee; font-size: 14px; }
-
-.controls label {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #e8d9f7;
-}
-
-.controls input[type="text"],
-.controls select {
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid #5b3a75;
-  background: #2a1840;
-  color: #f5ead6;
-  font-size: 14px;
-  width: 100%;
-}
-
-.controls input[type="file"] { font-size: 13px; }
-
-.presets, .actions { display: flex; flex-wrap: wrap; gap: 8px; }
-
-button {
-  padding: 9px 13px;
-  border-radius: 9px;
-  border: 1px solid #5b3a75;
-  background: #33204a;
-  color: #f5ead6;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-button:hover { background: #452a63; }
-button:disabled { opacity: 0.45; cursor: default; }
-button.primary {
-  background: linear-gradient(180deg, #ffcf3d, #ff2e88);
-  border-color: #ff2e88;
-  color: #1c0b22;
-  font-weight: 700;
-}
-
-#status { font-size: 13px; color: #c9b3e0; margin: 0; min-height: 18px; }
-
-.panels { display: flex; flex-direction: column; gap: 10px; }
-
-.panel-card {
-  border: 1px solid #4a2560;
-  border-radius: 10px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  background: #241338;
-}
-
-.panel-card h3 {
-  margin: 0;
-  font-size: 13px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #ffd166;
-}
-
-.panel-card label {
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.panel-card input[type="range"] { width: 100%; accent-color: #ff2e88; }
-
-.fine { font-size: 12px; color: #9d84b8; margin: 0; }
-
-.preview-wrap {
-  display: flex;
-  justify-content: center;
-  background: #0c0514;
-  border: 1px solid #3a1e52;
-  border-radius: 14px;
-  padding: 16px;
-}
-
-#preview {
-  width: min(100%, 860px);
-  height: auto;
-  border-radius: 6px;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
-}
-
-/* Screenshot scenes: the cover alone, full frame, no editor chrome. */
-body.shot-cover { background: #000; }
-body.shot-cover .studio {
-  display: block;
-  max-width: none;
-  margin: 0;
-  padding: 0;
-}
-body.shot-cover .controls,
-body.shot-cover #preview { display: none; }
-body.shot-cover .preview-wrap {
-  border: 0;
-  border-radius: 0;
-  padding: 0;
-  background: #000;
-}
-body.shot-cover #shotCanvas {
-  display: block;
-  width: 100vw;
-  height: 100vh;
-  object-fit: contain;
-}
-
+html, body { margin: 0; min-height: 100%; background: #160a24; color: #f4eefc; font: 15px/1.45 system-ui, sans-serif; }
+.app { display: flex; gap: 28px; align-items: flex-start; justify-content: center; padding: 24px; box-sizing: border-box; }
+.controls { display: flex; flex-direction: column; gap: 14px; width: 320px; flex: none; }
+.controls h1 { margin: 0; font-family: 'Anton', 'Arial Black', sans-serif; font-size: 40px; letter-spacing: 2px; color: #ffd23f; text-transform: uppercase; }
+.tag { margin: 0; color: #c9aee8; }
+.group { display: flex; flex-direction: column; gap: 8px; }
+.label { font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: #ff8ac2; }
+.row { display: flex; gap: 10px; }
+.row > * { flex: 1; }
+label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; }
+input[type=text], select { font: inherit; padding: 8px; border: 1px solid #5b3a78; border-radius: 6px; background: #241238; color: #f4eefc; }
+input[type=range] { width: 100%; accent-color: #ff2e88; }
+button { font: inherit; font-weight: 700; padding: 10px; border: 0; border-radius: 6px; background: #ff2e88; color: #fff; cursor: pointer; }
+button:disabled { opacity: 0.4; cursor: default; }
+button.secondary { background: #3a1c52; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips button { background: #3a1c52; padding: 6px 10px; font-size: 13px; }
+.chips button.active { background: #ff2e88; }
+.thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.thumb { padding: 0; background: none; border: 2px solid transparent; border-radius: 6px; overflow: hidden; }
+.thumb img { display: block; width: 100%; height: 64px; object-fit: cover; }
+.upload { cursor: pointer; }
+.upload input { display: none; }
+#distinct { margin: 0; font-weight: 700; color: #37e6ff; }
+#status { margin: 0; color: #c9aee8; min-height: 1.2em; }
+.fine { margin: 0; font-size: 12px; color: #8f76ad; }
+.stage { flex: 1; display: flex; justify-content: center; position: sticky; top: 24px; }
+canvas { max-width: 100%; height: auto; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55); }
+body.shot-cover .controls { display: none; }
+body.shot-cover .app { padding: 0; }
+body.shot-cover .stage { position: static; }
+body.shot-cover canvas { width: 100vw; height: 100vh; max-width: none; box-shadow: none; object-fit: contain; }
 @media (max-width: 900px) {
-  .studio { grid-template-columns: 1fr; }
-  .controls { position: static; }
+  .app { flex-direction: column; }
+  .stage { position: static; width: 100%; }
 }

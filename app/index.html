@@ -3,63 +3,89 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vice Heat — Key Art Cover Studio</title>
+<title>Vice Heat — GTA 6 Cover Art Maker</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<main class="studio">
-  <section class="controls" aria-label="Cover controls">
+<main class="app">
+  <section class="controls">
     <h1>Vice Heat</h1>
-    <p class="lede">Four big panels, one giant title. Your photo becomes key art.</p>
-    <label>Your photo <input id="upload" type="file" accept="image/*"></label>
-    <label>Layout
-      <select id="layout"></select>
-    </label>
-    <label>Grade
-      <select id="grade"></select>
-    </label>
+    <p class="tag">Your photos and a caption, made into multi-panel GTA-style key art.</p>
+
+    <div class="group">
+      <span class="label">Cover look</span>
+      <div id="presets" class="chips"></div>
+    </div>
+
+    <div class="row">
+      <label>Layout
+        <select id="layout"></select>
+      </label>
+      <label>Grade
+        <select id="grade"></select>
+      </label>
+    </div>
+
     <label>Title
       <input id="title" type="text" maxlength="24" value="VICE HEAT">
     </label>
-    <label>Tagline
-      <input id="tagline" type="text" maxlength="48" value="One last ride in Leonida">
+    <label>Tagline (neon script)
+      <input id="tagline" type="text" maxlength="40" value="one last ride in Leonida">
     </label>
-    <label>Post size
-      <select id="size"></select>
-    </label>
-    <div id="presets" class="presets" aria-label="Cover ideas"></div>
-    <div class="actions">
+
+    <div class="group">
+      <span class="label">Photo library — click a photo to fill the selected panel</span>
+      <div id="library" class="thumbs"></div>
+      <label class="upload">Add your photos
+        <input id="upload" type="file" accept="image/*" multiple>
+      </label>
+    </div>
+
+    <div class="group">
+      <span class="label" id="panelLabel">Panel 1 of 4</span>
+      <div id="panels" class="chips"></div>
+      <div class="row">
+        <label>Photo
+          <select id="panelPhoto"></select>
+        </label>
+      </div>
+      <label>Zoom
+        <input id="zoom" type="range" min="1" max="2.5" step="0.05" value="1">
+      </label>
+      <label>Focus X
+        <input id="fx" type="range" min="0" max="1" step="0.05" value="0.5">
+      </label>
+      <label>Focus Y
+        <input id="fy" type="range" min="0" max="1" step="0.05" value="0.5">
+      </label>
+    </div>
+
+    <div class="group">
+      <span class="label">Export size</span>
+      <div id="sizes" class="chips"></div>
+    </div>
+
+    <div class="row">
+      <button id="export" type="button">Export PNG</button>
+      <button id="exportAll" type="button">Export all 3 sizes</button>
+    </div>
+    <div class="row">
       <button id="surprise" type="button">Surprise me</button>
+      <button id="shuffle" type="button">Shuffle photos</button>
+    </div>
+    <div class="row">
       <button id="undo" type="button">Undo</button>
       <button id="redo" type="button">Redo</button>
     </div>
-    <div class="actions">
-      <button id="export" type="button" class="primary">Export PNG</button>
-      <button id="exportAll" type="button">Export all 3 sizes</button>
-    </div>
-    <p id="status" role="status">Pick a layout, type a title, export.</p>
-    <section id="panels" class="panels" aria-label="Panel controls"></section>
-    <p class="fine">Offline: photos stay on your machine. Fonts: Anton and Pacifico, SIL Open Font License.</p>
+    <p id="distinct" role="status">4 distinct photos in 4 panels</p>
+    <p id="status" role="status"></p>
+    <p class="fine">Works offline. Sample photos are original art made for this app.
+    No Rockstar logo, artwork or font is used.</p>
   </section>
-  <section class="preview-wrap" aria-label="Live preview">
-    <canvas id="preview" width="1080" height="1080"></canvas>
-    <canvas id="shotCanvas" width="1080" height="1080" hidden></canvas>
+  <section class="stage">
+    <canvas id="cover" width="720" height="720" aria-label="The cover preview"></canvas>
   </section>
 </main>
-<script type="module">
-  import { keyRunShot } from './src/studioShots.js';
-  import { keyStartStudio } from './src/studioApp.js';
-  const query = new URLSearchParams(location.search);
-  const shot = query.get('shot');
-  if (shot) {
-    keyRunShot(shot, query).catch((err) => {
-      document.getElementById('status').textContent = 'Shot failed: ' + err.message;
-    });
-  } else {
-    keyStartStudio().catch((err) => {
-      document.getElementById('status').textContent = 'Could not start: ' + err.message;
-    });
-  }
-</script>
+<script type="module" src="./src/app.js"></script>
 </body>
 </html>
